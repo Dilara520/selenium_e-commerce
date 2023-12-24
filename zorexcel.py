@@ -9,10 +9,10 @@ browser = webdriver.Chrome()
 browser.get(f"https://www.zoreaksesuar.com/arama?q={search}")
 browser.implicitly_wait(3)
 
-products = browser.find_elements(By.CSS_SELECTOR, "#catalog886 > div")
+count = browser.find_element(By.CSS_SELECTOR, "#relation\|886 > div > div > div > div.col-12.mb-2 > div > div > span").text
 
-if (len(products) >= 64):
-    scrolls = len(products) // 64
+if (int(count) >= 64):
+    scrolls = int(count) // 64
 
     for i in range(scrolls):
         browser.execute_script("window.scrollTo(0,document.body.scrollHeight)")
@@ -22,7 +22,8 @@ if (len(products) >= 64):
 
 data = []
 
-for i in range(len(products)):
+products = browser.find_elements(By.CSS_SELECTOR, "#catalog886 > div")
+for i in range(int(count)):
     browser.execute_script("arguments[0].scrollIntoView();", products[i])
     time.sleep(2)
     clickp = products[i].find_element(By.CSS_SELECTOR, "div > div.col-12.py-1.product-detail-card.height-equalized > div > div:nth-child(1) > a")
